@@ -1,24 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
+import { ArrowRight, BookOpen, Search, GraduationCap, CheckCircle2, Library, Sparkles, Heart, Layers3 } from 'lucide-react';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { SubjectCards, NoteCard } from '@/components/study/cards';
+import { notes, pageHead } from '@/lib/study-data';
+import libraryImage from '@/assets/study-library.jpg';
+export const Route = createFileRoute('/')({ head: () => pageHead('Your Learning Journey Starts Here', 'Find notes, learn better, and prepare for exams with confidence. Browse six subjects and free university study materials.'), component: Home });
+function Home() {
+  const [query, setQuery] = useState(''); const navigate = useNavigate();
+  return <><section className="hero"><img src={libraryImage} width={1792} height={1024} className="hero-image" alt="An open textbook, blue books, and laptop in a bright university library" fetchPriority="high" /><div className="site-container hero-content fade-in"><div className="eyebrow"><GraduationCap size={14} /> A little clarity. A lot of possibility.</div><h1 className="mt-5">Your Learning Journey<br /><span className="text-primary">Starts Here</span></h1><p className="mt-5 max-w-md text-[15px] leading-7 text-muted-foreground">Find notes, learn better, and prepare for exams<br className="hidden sm:block" /> with confidence.</p><form className="hero-search mt-6" onSubmit={e => { e.preventDefault(); navigate({ to: '/notes', search: { q: query, subject: 'all' } }); }}><Search size={19} className="text-muted-foreground" /><input aria-label="Search notes and subjects" maxLength={100} value={query} onChange={e => setQuery(e.target.value)} placeholder="Search notes, subjects, and more…" /><Button type="submit" size="icon" className="h-10 w-10" aria-label="Search"><ArrowRight /></Button></form><div className="mt-5 flex flex-wrap items-center gap-5"><Button asChild className="h-11 px-6"><Link to="/notes">Explore Notes <ArrowRight /></Link></Button><span className="flex items-center gap-1.5 text-xs text-muted-foreground"><CheckCircle2 size={15} className="text-primary" /> Free to explore. Easy to learn.</span></div></div></section><section className="stats-band" aria-label="Library highlights"><div className="site-container grid grid-cols-2 md:grid-cols-4">{[{ icon: Library, title: '6 Core Subjects', text: 'Something for every mind' }, { icon: FileIcon, title: 'Curated Study Notes', text: 'The essentials, made clear' }, { icon: GraduationCap, title: 'Student Focused', text: 'Built around your learning' }, { icon: Heart, title: 'Always Free', text: 'Knowledge without barriers' }].map((s,i) => <div key={s.title} className={`stat ${i ? 'md:pl-7' : ''}`}><span className="stat-icon"><s.icon size={21} strokeWidth={1.7} /></span><div><p className="text-[13px] font-bold">{s.title}</p><p className="mt-1 text-[11px] text-muted-foreground">{s.text}</p></div></div>)}</div></section><section className="section"><div className="site-container"><div className="section-heading"><div><div className="eyebrow mb-2">Find your focus</div><h2>Explore by Subject</h2><p>A world of knowledge, organized for you.</p></div><Button asChild variant="link" className="hidden p-0 text-xs sm:inline-flex"><Link to="/subjects">View all subjects <ArrowRight /></Link></Button></div><SubjectCards /></div></section><section className="section bg-muted"><div className="site-container"><div className="section-heading"><div><div className="eyebrow mb-2">Make your next study session count</div><h2>Featured Notes</h2><p>A few good places to start. Pick a topic and dive in.</p></div><Button asChild variant="link" className="p-0 text-xs"><Link to="/notes">All notes <ArrowRight /></Link></Button></div><div className="grid gap-5 md:grid-cols-3">{notes.slice(0,3).map(note => <NoteCard key={note.id} note={note} />)}</div></div></section><section className="study-banner"><div className="site-container flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center"><div className="flex items-center gap-5"><span className="hidden text-primary sm:block"><BookOpen size={42} strokeWidth={1.4} /></span><div><h2 className="text-xl font-bold">Small steps. Stronger understanding.</h2><p className="mt-2 text-sm text-muted-foreground">Your next “aha” moment is just a note away.</p></div></div><Button asChild className="h-11 px-6"><Link to="/notes">Find Your Next Note <ArrowRight /></Link></Button></div></section></>;
 }
+const FileIcon = Layers3;
