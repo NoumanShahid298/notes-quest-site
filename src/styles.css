@@ -123,3 +123,10 @@
   .page-intro h1 { font-size: 30px; }
 }
 @media(prefers-reduced-motion: reduce) { *,*::before,*::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+@media(max-width: 420px) {
+  .site-header .site-container { width: calc(100% - 24px); gap: 4px; }
+  .site-header .brand { font-size: 14px; gap: 6px; }
+  .site-header .brand-mark { width: 28px; height: 30px; }
+  .site-header .brand-mark svg { width: 19px; }
+  .site-header a[data-slot] { padding-inline: 8px; }
+}
