@@ -14,3 +14,5 @@
 - Use the root route for shared navigation and footer, with independent content routes and a notes layout rendering its child outlet for consistent navigation and metadata.
 - Keep contact submission frontend-only and explicitly identify its demo status, because this project does not deliver or persist messages.
 - Define visual roles and reusable feature styles in the global design system; use the shared Button for interactive controls.
+- Keep a single shared account provider mounted inside the root query provider; it owns session updates and sign-out cache cleanup so navigation always reflects account state.
+- Keep study materials publicly accessible; account and recovery pages are independent public routes so email links can complete without a login gate.
