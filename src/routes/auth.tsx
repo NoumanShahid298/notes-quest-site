@@ -8,7 +8,7 @@ import { useStudentAuth } from '@/components/study/auth-provider';
 import { pageHead } from '@/lib/study-data';
 
 export const Route = createFileRoute('/auth')({
-  validateSearch: (search: Record<string, unknown>): { mode: 'login' | 'signup' | 'forgot' } => ({ mode: search.mode === 'signup' || search.mode === 'forgot' ? search.mode : 'login' }),
+  validateSearch: (search: Record<string, unknown>): { mode: 'login' | 'signup' | 'forgot' } => { const mode = search['mode']; return { mode: mode === 'signup' || mode === 'forgot' ? mode : 'login' }; },
   head: () => pageHead('Student Account', 'Log in or create your StudyNotes Hub student account.'),
   component: AuthPage,
 });
