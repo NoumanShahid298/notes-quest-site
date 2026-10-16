@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { SiteHeader, SiteFooter } from "@/components/study/site-shell";
 import { StudentAuthProvider } from "@/components/study/auth-provider";
+import { StudyAssistant } from "@/components/study/study-assistant";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -130,6 +131,7 @@ function RootComponent() {
       <SiteHeader />
       <main><Outlet /></main>
       <SiteFooter />
+      <StudyAssistant />
       </StudentAuthProvider>
     </QueryClientProvider>
   );
