@@ -17,7 +17,7 @@ function friendly(message: string) {
   return message.includes('Too many') ? message : 'Something went wrong while saving your feedback. Please try again.';
 }
 
-function Field({ id, label, error, children, hint }: { id: string; label: string; error?: string; children: ReactNode; hint?: string }) {
+function Field({ id, label, error, children, hint }: { id: string; label: string; error?: string | undefined; children: ReactNode; hint?: string | undefined }) {
   return <div className="form-field"><label htmlFor={id}>{label}{hint && <span className="ml-1 font-normal text-muted-foreground">{hint}</span>}</label>{children}{error && <span id={`${id}-error`} role="alert" className="text-xs font-normal text-destructive">{error}</span>}</div>;
 }
 
@@ -45,15 +45,15 @@ function StudentForm() {
   const ia = (k: string) => ({ 'aria-invalid': !!errors[k], 'aria-describedby': errors[k] ? `${k}-error` : undefined });
   return (
     <form noValidate onSubmit={submit} className="feedback-card space-y-5" aria-label="Student feedback form">
-      <Field id="rating" label="Your rating" error={errors.rating}><StarRating id="rating" value={v.rating} onChange={n => setV({ ...v, rating: n })} error={errors.rating} /></Field>
-      <Field id="category" label="Category" error={errors.category}>
+      <Field id="rating" label="Your rating" error={errors['rating']}><StarRating id="rating" value={v.rating} onChange={n => setV({ ...v, rating: n })} error={errors['rating']} /></Field>
+      <Field id="category" label="Category" error={errors['category']}>
         <select id="category" value={v.category} onChange={e => setV({ ...v, category: e.target.value })} {...ia('category')}><option value="">Choose a category</option>{feedbackCategories.map(c => <option key={c}>{c}</option>)}</select>
       </Field>
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field id="name" label="Name" hint="(optional)" error={errors.name}><input id="name" maxLength={100} autoComplete="name" value={v.name} onChange={e => setV({ ...v, name: e.target.value })} {...ia('name')} /></Field>
-        <Field id="email" label="Email" hint="(optional)" error={errors.email}><input id="email" type="email" maxLength={255} autoComplete="email" value={v.email} onChange={e => setV({ ...v, email: e.target.value })} {...ia('email')} /></Field>
+        <Field id="name" label="Name" hint="(optional)" error={errors['name']}><input id="name" maxLength={100} autoComplete="name" value={v.name} onChange={e => setV({ ...v, name: e.target.value })} {...ia('name')} /></Field>
+        <Field id="email" label="Email" hint="(optional)" error={errors['email']}><input id="email" type="email" maxLength={255} autoComplete="email" value={v.email} onChange={e => setV({ ...v, email: e.target.value })} {...ia('email')} /></Field>
       </div>
-      <Field id="comments" label="Comments" error={errors.comments}><textarea id="comments" rows={5} maxLength={2000} value={v.comments} onChange={e => setV({ ...v, comments: e.target.value })} placeholder="What did you like? What could be better?" {...ia('comments')} /></Field>
+      <Field id="comments" label="Comments" error={errors['comments']}><textarea id="comments" rows={5} maxLength={2000} value={v.comments} onChange={e => setV({ ...v, comments: e.target.value })} placeholder="What did you like? What could be better?" {...ia('comments')} /></Field>
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" value={v.website} onChange={e => setV({ ...v, website: e.target.value })} />
       {formError && <p role="alert" className="text-sm text-destructive">{formError}</p>}
       <Button type="submit" className="h-11 px-7" disabled={status === 'busy'}>{status === 'busy' ? 'Submitting…' : 'Submit Feedback'} <Send size={16} /></Button>
@@ -86,10 +86,10 @@ function TeacherForm() {
   return (
     <form noValidate onSubmit={submit} className="feedback-card space-y-5" aria-label="Teacher feedback form">
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field id="teacher_name" label="Teacher name" error={errors.teacher_name}><input id="teacher_name" maxLength={100} value={v.teacher_name} onChange={e => setV({ ...v, teacher_name: e.target.value })} {...ia('teacher_name')} /></Field>
-        <Field id="assignment_title" label="Assignment or project title" error={errors.assignment_title}><input id="assignment_title" maxLength={200} value={v.assignment_title} onChange={e => setV({ ...v, assignment_title: e.target.value })} {...ia('assignment_title')} /></Field>
+        <Field id="teacher_name" label="Teacher name" error={errors['teacher_name']}><input id="teacher_name" maxLength={100} value={v.teacher_name} onChange={e => setV({ ...v, teacher_name: e.target.value })} {...ia('teacher_name')} /></Field>
+        <Field id="assignment_title" label="Assignment or project title" error={errors['assignment_title']}><input id="assignment_title" maxLength={200} value={v.assignment_title} onChange={e => setV({ ...v, assignment_title: e.target.value })} {...ia('assignment_title')} /></Field>
       </div>
-      <Field id="t-rating" label="Rating" error={errors.rating}><StarRating id="t-rating" value={v.rating} onChange={n => setV({ ...v, rating: n })} error={errors.rating} /></Field>
+      <Field id="t-rating" label="Rating" error={errors['rating']}><StarRating id="t-rating" value={v.rating} onChange={n => setV({ ...v, rating: n })} error={errors['rating']} /></Field>
       {text('strengths', 'Strengths')}
       {text('improvements', 'Improvement suggestions')}
       {text('private_comments', 'Private comments', '(optional, admins only)')}
