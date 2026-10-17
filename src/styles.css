@@ -143,7 +143,8 @@
 .assistant-chip:hover { text-decoration: underline; }
 .assistant-input { flex: 1; min-width: 0; height: 40px; padding: 0 12px; font-size: 13px; border: 1px solid var(--border); border-radius: 6px; background: var(--background); }
 @media(max-width: 520px) { .assistant-panel { right: 8px; left: 8px; width: auto; bottom: 84px; height: calc(100dvh - 100px); } .assistant-fab { right: 14px; bottom: 14px; } }
-.social-bar { position: fixed; left: 22px; bottom: 22px; z-index: 40; display: flex; gap: 6px; padding: 6px; background: var(--footer); border-radius: 999px; box-shadow: var(--shadow-raised); }
+.social-bar { display: flex; flex-wrap: nowrap; gap: 8px; margin-top: 18px; }
+.social-bar .social-btn { border: 1px solid color-mix(in oklch, var(--footer-text) 25%, transparent); }
 .social-item { position: relative; display: flex; }
 .social-btn { width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; color: var(--footer-text); transition: background .2s, color .2s, transform .2s; cursor: pointer; }
 .social-btn svg { width: 17px; height: 17px; }
@@ -153,4 +154,4 @@
 .social-item:first-child .social-tip { left: 0; transform: translate(0, 4px); }
 .social-item:hover .social-tip,.social-btn:focus-visible + .social-tip,.social-tip.show { opacity: 1; transform: translate(-50%, 0); }
 .social-item:first-child:hover .social-tip,.social-item:first-child .social-tip.show,.social-item:first-child .social-btn:focus-visible + .social-tip { transform: translate(0, 0); }
-@media(max-width: 520px) { .social-bar { left: 12px; bottom: 18px; gap: 2px; padding: 4px; } .social-btn { width: 32px; height: 32px; } .social-btn svg { width: 15px; height: 15px; } }
+@media(max-width: 520px) { .social-bar { gap: 6px; } }

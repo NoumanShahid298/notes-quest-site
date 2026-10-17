@@ -1,4 +1,3 @@
-import { SocialBar } from "@/components/study/social-bar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -132,7 +131,6 @@ function RootComponent() {
       <SiteHeader />
       <main><Outlet /></main>
       <SiteFooter />
-      <SocialBar />
       <StudyAssistant />
       </StudentAuthProvider>
     </QueryClientProvider>
