@@ -10,18 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SubjectsRouteImport } from './routes/subjects'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as NotesIndexRouteImport } from './routes/notes.index'
 import { Route as NotesNoteIdRouteImport } from './routes/notes.$noteId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -39,6 +46,11 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FeedbackRoute = FeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NotesRoute = NotesRouteImport.update({
   id: '/notes',
   path: '/notes',
@@ -53,6 +65,11 @@ const SubjectsRoute = SubjectsRouteImport.update({
   id: '/subjects',
   path: '/subjects',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const NotesIndexRoute = NotesIndexRouteImport.update({
   id: '/',
@@ -70,9 +87,11 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/feedback': typeof FeedbackRoute
   '/notes': typeof NotesRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/subjects': typeof SubjectsRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/notes/$noteId': typeof NotesNoteIdRoute
   '/notes/': typeof NotesIndexRoute
 }
@@ -81,20 +100,25 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/feedback': typeof FeedbackRoute
   '/reset-password': typeof ResetPasswordRoute
   '/subjects': typeof SubjectsRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/notes/$noteId': typeof NotesNoteIdRoute
   '/notes': typeof NotesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
   '/contact': typeof ContactRoute
+  '/feedback': typeof FeedbackRoute
   '/notes': typeof NotesRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/subjects': typeof SubjectsRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/notes/$noteId': typeof NotesNoteIdRoute
   '/notes/': typeof NotesIndexRoute
 }
@@ -105,9 +129,11 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/contact'
+    | '/feedback'
     | '/notes'
     | '/reset-password'
     | '/subjects'
+    | '/admin'
     | '/notes/$noteId'
     | '/notes/'
   fileRoutesByTo: FileRoutesByTo
@@ -116,28 +142,35 @@ export interface FileRouteTypes {
     | '/about'
     | '/auth'
     | '/contact'
+    | '/feedback'
     | '/reset-password'
     | '/subjects'
+    | '/admin'
     | '/notes/$noteId'
     | '/notes'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/about'
     | '/auth'
     | '/contact'
+    | '/feedback'
     | '/notes'
     | '/reset-password'
     | '/subjects'
+    | '/_authenticated/admin'
     | '/notes/$noteId'
     | '/notes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
   ContactRoute: typeof ContactRoute
+  FeedbackRoute: typeof FeedbackRoute
   NotesRoute: typeof NotesRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
   SubjectsRoute: typeof SubjectsRoute
@@ -150,6 +183,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -173,6 +213,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/feedback': {
+      id: '/feedback'
+      path: '/feedback'
+      fullPath: '/feedback'
+      preLoaderRoute: typeof FeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/notes': {
       id: '/notes'
       path: '/notes'
@@ -194,6 +241,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubjectsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/notes/': {
       id: '/notes/'
       path: '/'
@@ -211,6 +265,17 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 interface NotesRouteChildren {
   NotesNoteIdRoute: typeof NotesNoteIdRoute
   NotesIndexRoute: typeof NotesIndexRoute
@@ -225,9 +290,11 @@ const NotesRouteWithChildren = NotesRoute._addFileChildren(NotesRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
   ContactRoute: ContactRoute,
+  FeedbackRoute: FeedbackRoute,
   NotesRoute: NotesRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
   SubjectsRoute: SubjectsRoute,
