@@ -18,7 +18,7 @@ function AdminPage() {
   const { user } = useStudentAuth();
   const qc = useQueryClient();
   const [tab, setTab] = useState<'student' | 'teacher'>('student');
-  const role = useQuery({ queryKey: ['is-admin', user?.id], enabled: !!user, queryFn: async () => { const { data, error } = await supabase.rpc('has_role', { _user_id: user!.id, _role: 'admin' }); if (error) throw error; return !!data; } });
+  const role = useQuery({ queryKey: ['is-admin', user?.id], enabled: !!user, queryFn: async () => { if (!user) return false; const { data, error } = await supabase.rpc('has_role', { _user_id: user.id, _role: 'admin' }); if (error) throw error; return !!data; } });
   const students = useQuery({ queryKey: ['student-feedback'], enabled: role.data === true, queryFn: async () => { const { data, error } = await supabase.from('student_feedback').select('*').order('created_at', { ascending: false }); if (error) throw error; return data; } });
   const teachers = useQuery({ queryKey: ['teacher-feedback'], enabled: role.data === true, queryFn: async () => { const { data, error } = await supabase.from('teacher_feedback').select('*').order('created_at', { ascending: false }); if (error) throw error; return data; } });
   const remove = useMutation({
@@ -28,6 +28,7 @@ function AdminPage() {
   const del = (table: 'student_feedback' | 'teacher_feedback', id: string) => { if (window.confirm('Delete this feedback permanently?')) remove.mutate({ table, id }); };
 
   if (role.isLoading || !user) return <section className="section"><div className="site-container text-sm text-muted-foreground">Checking access…</div></section>;
+  if (role.error) return <section className="section"><div className="site-container"><p role="alert" className="text-sm text-destructive">Could not check administrator access. Please try again.</p><Button variant="outline" className="mt-4" onClick={() => void role.refetch()}>Try again</Button></div></section>;
   if (!role.data) return <section className="section"><div className="site-container max-w-xl"><ShieldAlert size={34} className="mb-4 text-primary" /><h1 className="text-2xl font-bold">Administrators only</h1><p className="mt-3 text-sm leading-7 text-muted-foreground">Your account does not have administrator access, so feedback cannot be shown here.</p></div></section>;
 
   const avg = (rows?: { rating: number }[]) => rows?.length ? (rows.reduce((s, r) => s + r.rating, 0) / rows.length).toFixed(1) : '–';
@@ -39,8 +40,8 @@ function AdminPage() {
         <div className="feedback-card"><p className="text-xs text-muted-foreground">Teacher feedback</p><p className="text-2xl font-bold">{teachers.data?.length ?? '–'} <span className="text-sm font-medium text-muted-foreground">· avg {avg(teachers.data)} ★</span></p></div>
       </div>
       <div role="tablist" aria-label="Feedback type" className="feedback-tabs">
-        <button role="tab" type="button" aria-selected={tab === 'student'} onClick={() => setTab('student')}>Student feedback</button>
-        <button role="tab" type="button" aria-selected={tab === 'teacher'} onClick={() => setTab('teacher')}>Teacher feedback</button>
+        <Button variant="ghost" role="tab" type="button" aria-selected={tab === 'student'} onClick={() => setTab('student')}>Student feedback</Button>
+        <Button variant="ghost" role="tab" type="button" aria-selected={tab === 'teacher'} onClick={() => setTab('teacher')}>Teacher feedback</Button>
       </div>
       {remove.error && <p role="alert" className="mb-4 text-sm text-destructive">Could not delete that item. Please try again.</p>}
       {tab === 'student' ? (

@@ -77,7 +77,7 @@ export function TeacherForm() {
     try {
       const { error } = await supabase.from('teacher_feedback').insert({ ...r.data, submitted_by: user.id });
       if (error) throw error;
-      setStatus('done');
+      setStatus('done'); window.dispatchEvent(new Event(reviewSubmittedEvent));
     } catch (error) { setStatus('idle'); setFormError(friendly(error instanceof Error ? error.message : String((error as { message?: string })?.message ?? ''))); }
   }
   if (status === 'done') return <Success title="Teacher feedback saved" text="Thank you. Your feedback was stored privately and is visible only to site administrators." onReset={() => { setV(empty); setStatus('idle'); }} />;
