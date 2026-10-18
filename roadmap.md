@@ -8,5 +8,6 @@
 - [x] Verify account navigation and signed-in/sign-out states
 - [x] Add floating StudyNotes AI Assistant answering only from site notes
 - [x] Test chatbot open/close/send/quick replies on desktop and mobile
-- [ ] Reuse student and teacher forms in a session-limited review popup with footer entry
-- [ ] Verify database saving, privacy, validation, popup dismissal, and mobile layout
+- [x] Reuse student and teacher forms in a session-limited review popup with footer entry
+- [x] Verify student database saving, anonymous privacy, validation, popup dismissal, and mobile layout
+- [ ] Verify signed-in teacher submission and administrator readback — blocked: no registered account or administrator exists; user must sign up and identify the account to authorize
