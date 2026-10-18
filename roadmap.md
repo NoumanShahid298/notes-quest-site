@@ -8,3 +8,5 @@
 - [x] Verify account navigation and signed-in/sign-out states
 - [x] Add floating StudyNotes AI Assistant answering only from site notes
 - [x] Test chatbot open/close/send/quick replies on desktop and mobile
+- [ ] Reuse student and teacher forms in a session-limited review popup with footer entry
+- [ ] Verify database saving, privacy, validation, popup dismissal, and mobile layout
