@@ -14,6 +14,7 @@ import appCss from "../styles.css?url";
 import { SiteHeader, SiteFooter } from "@/components/study/site-shell";
 import { StudentAuthProvider } from "@/components/study/auth-provider";
 import { StudyAssistant } from "@/components/study/study-assistant";
+import { ReviewPopup } from "@/components/study/review-popup";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -132,6 +133,7 @@ function RootComponent() {
       <main><Outlet /></main>
       <SiteFooter />
       <StudyAssistant />
+      <ReviewPopup />
       </StudentAuthProvider>
     </QueryClientProvider>
   );

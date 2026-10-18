@@ -6,6 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useStudentAuth } from '@/components/study/auth-provider';
 import { StarRating } from '@/components/study/star-rating';
 import { feedbackCategories, issuesToErrors, studentFeedbackSchema, teacherFeedbackSchema } from '@/lib/feedback';
+import { reviewSubmittedEvent } from '@/lib/review-session';
 
 function friendly(message: string) {
   return message.includes('Too many') ? message : 'Something went wrong while saving your feedback. Please try again.';
@@ -34,7 +35,7 @@ export function StudentForm({ onSubmitted, embedded = false }: { onSubmitted?: (
     try {
       const { error } = await supabase.from('student_feedback').insert(r.data);
       if (error) throw error;
-      setStatus('done'); onSubmitted?.();
+      setStatus('done'); onSubmitted?.(); window.dispatchEvent(new Event(reviewSubmittedEvent));
     } catch (error) { setStatus('idle'); setFormError(friendly(error instanceof Error ? error.message : String((error as { message?: string })?.message ?? ''))); }
   }
   if (status === 'done') return <Success title="Thank you for your feedback!" text="Your feedback was saved. Only site administrators can read it." onReset={() => { setV(empty); setStatus('idle'); }} />;

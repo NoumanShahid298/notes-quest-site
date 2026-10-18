@@ -16,3 +16,5 @@
 - Define visual roles and reusable feature styles in the global design system; use the shared Button for interactive controls.
 - Keep a single shared account provider mounted inside the root query provider; it owns session updates and sign-out cache cleanup so navigation always reflects account state.
 - Keep study materials publicly accessible; account and recovery pages are independent public routes so email links can complete without a login gate.
+- Reuse shared feedback forms in the public feedback page and a root-mounted nonmodal review popup; session storage suppresses automatic prompts without blocking navigation.
+- Feedback inserts use the existing browser client with database constraints, rate-limit triggers, and administrator-only read policies; never return private feedback from public endpoints.
