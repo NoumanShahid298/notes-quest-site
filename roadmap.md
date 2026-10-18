@@ -1,4 +1,6 @@
 # StudyNotes Hub
+- [ ] Add first-visit cookie consent, preferences, and cookie policy
+- [ ] Test remembered choices, settings access, and small-screen consent
 - [x] Create blue-and-white design and shared navigation
 - [x] Build homepage and six subject cards
 - [x] Build searchable, filterable notes library and note reading
